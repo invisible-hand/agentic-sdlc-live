@@ -74,9 +74,11 @@ Implement spec.md now. Commit when you are done.
 
 ### 3. Race the models
 
-Run these from `main` in separate terminals, once `spec.md` is committed:
+Go back to `main` first, because `claude -w` starts from the branch you're on. Then run these in
+separate terminals:
 
 ```sh
+git switch main
 claude -w race-haiku  --model haiku  --effort low    --permission-mode auto "Implement spec.md. Commit when you are done."
 claude -w race-sonnet --model sonnet --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
 claude -w race-opus   --model opus   --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
