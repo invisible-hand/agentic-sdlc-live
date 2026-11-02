@@ -80,6 +80,7 @@ Run these from `main` in separate terminals, once `spec.md` is committed:
 claude -w race-haiku  --model haiku  --effort low    --permission-mode auto "Implement spec.md. Commit when you are done."
 claude -w race-sonnet --model sonnet --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
 claude -w race-opus   --model opus   --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
+claude -w race-fable  --model fable  --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
 ```
 
 Then use `/usage` in a session to see what you've spent.
