@@ -17,10 +17,9 @@ that gap:
 |---|---|---|
 | **1. Alone** | Give an agent the ticket and nothing else | What it builds when it has to guess |
 | **2. Ask** | Run `/spec` so the agent asks first and stops | Guesses turned into a written spec |
-| **3. Race** | Run a cheap and a strong model in parallel worktrees | What each one costs and delivers |
-| **4. Guardrails** | Let hooks, CI and permissions do their job | What's enforced, and what isn't |
-| **5. Review** | Run `/panel` on a finished branch | Agents point, and a human decides |
-| **6. Loop** | Run `/harvest` and apply what it proposes | The repo gets harder to get wrong |
+| **3. Guardrails** | Let hooks, CI and permissions do their job | What's enforced, and what isn't |
+| **4. Review** | Run `/panel` on a finished branch | Agents point, and a human decides |
+| **5. Loop** | Run `/harvest` and apply what it proposes | The repo gets harder to get wrong |
 
 ## Quick start
 
@@ -72,22 +71,7 @@ new branch and build:
 Implement spec.md now. Commit when you are done.
 ```
 
-### 3. Race the models
-
-Go back to `main` first, because `claude -w` starts from the branch you're on. Then run the
-cheapest and a strong model side by side, in two terminals:
-
-```sh
-git switch main
-claude -w race-haiku --model haiku --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
-claude -w race-opus  --model opus  --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
-```
-
-Swap in any other model you want to compare.
-
-Then use `/usage` in a session to see what you've spent.
-
-### 4. Test the guardrails
+### 3. Test the guardrails
 
 Tell an agent to break a rule on purpose:
 
@@ -100,7 +84,7 @@ The Stop hook runs the checks when the agent tries to finish, and sends it back 
 gives feedback, but it doesn't undo a commit. Blocking a merge is CI's job, once `hygiene` is a
 required status check in your repo.
 
-### 5. Review with a panel
+### 4. Review with a panel
 
 Open a session on a finished branch and run:
 
@@ -112,7 +96,7 @@ Three reviewers run in parallel, and a skeptic tries to disprove each finding. Y
 confirmed findings and a short list of decisions only a human can make. The panel never edits code
 or approves anything.
 
-### 6. Close the loop
+### 5. Close the loop
 
 Run `/harvest` with the decisions you made:
 
