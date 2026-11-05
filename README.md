@@ -17,10 +17,10 @@ that gap:
 |---|---|---|
 | **1. Alone** | Give an agent the ticket and nothing else | What it builds when it has to guess |
 | **2. Ask** | Run `/spec` so the agent asks first and stops | Guesses turned into a written spec |
-| **3. Race** | Run several models in parallel worktrees | What each one costs and delivers |
+| **3. Race** | Run a cheap and a strong model in parallel worktrees | What each one costs and delivers |
 | **4. Guardrails** | Let hooks, CI and permissions do their job | What's enforced, and what isn't |
 | **5. Review** | Run `/panel` on a finished branch | Agents point, and a human decides |
-| **6. Loop** | Run `/harvest`, then repeat the ticket | The repo gets harder to get wrong |
+| **6. Loop** | Run `/harvest` and apply what it proposes | The repo gets harder to get wrong |
 
 ## Quick start
 
@@ -48,7 +48,7 @@ To open pull requests and see CI run, push your clone to a repo of your own firs
 ### 1. Build from the ticket alone
 
 ```sh
-claude -w alone --permission-mode auto "Implement the ticket in ticket.md. Commit when you are done."
+claude -w alone --model opus --effort medium --permission-mode auto "Implement the ticket in ticket.md. Commit when you are done."
 ```
 
 `-w` gives the agent its own git worktree and branch under `.claude/worktrees/`. Run a few in
@@ -74,16 +74,16 @@ Implement spec.md now. Commit when you are done.
 
 ### 3. Race the models
 
-Go back to `main` first, because `claude -w` starts from the branch you're on. Then run these in
-separate terminals:
+Go back to `main` first, because `claude -w` starts from the branch you're on. Then run the
+cheapest and a strong model side by side, in two terminals:
 
 ```sh
 git switch main
-claude -w race-haiku  --model haiku  --effort low    --permission-mode auto "Implement spec.md. Commit when you are done."
-claude -w race-sonnet --model sonnet --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
-claude -w race-opus   --model opus   --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
-claude -w race-fable  --model fable  --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
+claude -w race-haiku --model haiku --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
+claude -w race-opus  --model opus  --effort medium --permission-mode auto "Implement spec.md. Commit when you are done."
 ```
+
+Swap in any other model you want to compare.
 
 Then use `/usage` in a session to see what you've spent.
 
@@ -121,7 +121,9 @@ Run `/harvest` with the decisions you made:
 ```
 
 It proposes at most three changes, each sent to the place it belongs: a test, a rule in `AGENTS.md`
-or a sharper question in `/spec`. Apply what you agree with, then repeat step 1 and compare.
+or a sharper question in `/spec`. Apply what you agree with. Every later session reads `AGENTS.md`,
+and the tests run in `check.sh`, the Stop hook and CI, so the next ticket starts from what this one
+taught. To see the difference, remove `spec.md` and repeat step 1.
 
 ## What's in the repo
 
